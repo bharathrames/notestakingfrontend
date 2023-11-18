@@ -3,10 +3,8 @@ import axios from 'axios';
 import Dashboard from './components/Dashboard';
 import Register from './components/Register';
 import Login from './components/Login';
-import "./App.css"
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { toast } from 'react-toastify';
+
+
 
 function App() {
   const [username, setUsername] = useState('');
@@ -52,13 +50,6 @@ function App() {
       console.error('Error registering user:', error);
     }
   };
-  const showToast = (message) => {
-    toast.error(message, { position: toast.POSITION.TOP_CENTER });
-  };
-
-  const showToaster = (message) => {
-    toast.success(message, { position: toast.POSITION.TOP_CENTER });
-  };
 
   const handleLogin = async () => {
     try {
@@ -67,10 +58,8 @@ function App() {
         password,
       });
       setToken(response.data.token);
-      showToaster('Login successful!');
     } catch (error) {
       console.error('Error logging in:', error);
-      showToast('Incorrect username or password.');
     }
   };
 
@@ -149,19 +138,6 @@ function App() {
     setEditMode(false);
     setEditNoteId(null);
   };
-  const handleLogout = () => {
-    // Clear user data and token
-    setUsername('');
-    setPassword('');
-    setToken('');
-    setNotes([]);
-    setTitle('');
-    setContent('');
-    setEditMode(false);
-    setEditNoteId(null);
-    setKeyword('');
-    setSearchResults([]);
-  };
   
   const handleSearch = async () => {
     try {
@@ -185,7 +161,7 @@ function App() {
 
   return (
     <div>
-      <h1 className='heading'>My Notes App</h1>
+      <h1>My Notes App</h1>
       {token ? (
         <Dashboard
           title={title}
@@ -202,7 +178,6 @@ function App() {
           handleSearch={handleSearch}
           searchResults={searchResults} 
           handleCancelEdit={handleCancelEdit}
-          handleLogout={handleLogout}
           editMode={editMode}
         />
       ) : (
@@ -214,7 +189,6 @@ function App() {
             handlePasswordChange={handlePasswordChange}
             handleRegister={handleRegister}
           />
-          <ToastContainer />
           <Login
             username={username}
             password={password}
@@ -229,3 +203,63 @@ function App() {
 }
 
 export default App;
+////////////////////////////////////////////////////////////
+// Dashboard.js
+import React from 'react';
+
+const Dashboard = ({
+  title,
+  content,
+  keyword,
+  setKeyword,
+  notes,
+  handleTitleChange,
+  handleContentChange,
+  searchResults,
+  handleAddNote,
+  handleUpdateNote,
+  handleEditNote,
+  handleDeleteNote,
+  handleSearch,
+  handleCancelEdit,
+  editMode,
+}) => (
+  <div>
+    <h2>Notes</h2>
+    <div>
+      <label>Title: </label>
+      <input type="text" value={title} onChange={handleTitleChange} />
+    </div>
+    <div>
+      <label>Content: </label>
+      <textarea value={content} onChange={handleContentChange} />
+    </div>
+    <div>
+      {editMode ? (
+        <>
+          <button onClick={handleUpdateNote}>Update Note</button>
+          <button onClick={handleCancelEdit}>Cancel</button>
+        </>
+      ) : (
+        <button onClick={handleAddNote}>Add Note</button>
+      )}
+    </div>
+    <div>
+      <label>Search: </label>
+      <input type="text" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+      <button onClick={handleSearch}>Search</button>
+    </div>
+    <ul>
+      {/* Display either searchResults or all notes based on search state */}
+      {(searchResults.length > 0 ? searchResults : notes).map((note) => (
+        <li key={note._id}>
+          <strong>{note.title}</strong>: {note.content}
+          <button onClick={() => handleEditNote(note._id)}>Edit</button>
+          <button onClick={() => handleDeleteNote(note._id)}>Delete</button>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
+export default Dashboard;
