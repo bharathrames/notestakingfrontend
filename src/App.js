@@ -20,7 +20,7 @@ function App() {
   const [editNoteId, setEditNoteId] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
 
-  const apiUrl = 'http://localhost:5000';
+  const apiUrl = 'https://notestakeingbackend.vercel.app';
 
   const fetchNotes = async () => {
     try {
@@ -91,7 +91,7 @@ function App() {
       );
       setTitle('');
       setContent('');
-      fetchNotes(); // Fetch updated notes immediately after adding a new note
+      fetchNotes(); 
     } catch (error) {
       console.error('Error adding note:', error);
     }
@@ -127,7 +127,7 @@ function App() {
           Authorization: `Bearer ${token}`,
         },
       });
-      fetchNotes(); // Refresh the notes after delete
+      fetchNotes(); 
     } catch (error) {
       console.error('Error deleting note:', error);
     }
@@ -150,7 +150,6 @@ function App() {
     setEditNoteId(null);
   };
   const handleLogout = () => {
-    // Clear user data and token
     setUsername('');
     setPassword('');
     setToken('');
@@ -173,7 +172,7 @@ function App() {
         },
       });
       console.log('After Search - Response:', response.data);
-      setSearchResults(response.data.notes);  // Update search results state
+      setSearchResults(response.data.notes);  
     } catch (error) {
       console.error('Error searching notes:', error);
     }

@@ -1,4 +1,3 @@
-// Register.js
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -23,7 +22,6 @@ const Register = ({ username, password, handleUsernameChange, handlePasswordChan
     } else if (password.length < 8) {
       showToast('Password must be at least 8 characters long.');
     } else {
-      // Call the register function if all conditions are met
       handleRegister();
       showToaster('User registered successfully!');
     }

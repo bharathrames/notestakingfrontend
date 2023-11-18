@@ -71,7 +71,6 @@ const Dashboard = ({
     </div>
     <div className="card">
       <ul className="list-group list-group-flush">
-        {/* Display either searchResults or all notes based on search state */}
         {(searchResults.length > 0 ? searchResults : notes).map((note) => (
           <li key={note._id} className="list-group-item">
             <div className="card">
